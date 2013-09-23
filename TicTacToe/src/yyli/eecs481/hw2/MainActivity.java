@@ -21,6 +21,7 @@ public class MainActivity extends Activity {
 		IN_PROGRESS,
 		X_WIN,
 		O_WIN,
+		TIE
 	};
 	
 	protected Integer[] TicTacToeTilesId = {
@@ -83,6 +84,15 @@ public class MainActivity extends Activity {
     	Integer diag1sum = TicTacToeTilesStatus[0] + TicTacToeTilesStatus[4] + TicTacToeTilesStatus[8]; 
     	Integer diag2sum = TicTacToeTilesStatus[2] + TicTacToeTilesStatus[4] + TicTacToeTilesStatus[6];
     	
+    	Boolean tie = true;
+    	
+    	for (int i = 0; i < 9; i++) {
+    		if (TicTacToeTilesStatus[i] == TTT_STATUS_EMPTY) {
+    			tie = false;
+    			break;
+    		}
+    	}
+
     	if (row1sum == 3 || row2sum == 3 || row3sum == 3 || 
     		col1sum == 3 || col2sum == 3 || col3sum == 3 || 
     		diag1sum == 3 || diag2sum == 3) {
@@ -92,6 +102,8 @@ public class MainActivity extends Activity {
 			col1sum == -3 || col2sum == -3 || col3sum == -3 || 
     		diag1sum == -3 || diag2sum == -3) {
     			return GameStatus.O_WIN;
+    	} else if (tie) {
+    		return GameStatus.TIE;
     	} else {
     		return GameStatus.IN_PROGRESS;
     	}
@@ -122,7 +134,9 @@ public class MainActivity extends Activity {
 
             	GameStatus gStatus = getGameStatus();
             	if (gStatus != GameStatus.IN_PROGRESS) {
-	            	if (gStatus == GameStatus.X_WIN) {
+            		if (gStatus == GameStatus.TIE) {
+	            		statusText.setText("Tie :( Click reset to play again!");
+            		} else if (gStatus == GameStatus.X_WIN) {
 	            		statusText.setText("X Wins!!! Click reset to play again!");
 	            	} else if (gStatus == GameStatus.O_WIN) {
 	            		statusText.setText("O Wins!!! Click reset to play again!");
